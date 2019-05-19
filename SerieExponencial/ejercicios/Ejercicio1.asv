@@ -1,0 +1,18 @@
+syms t; k=10;   % Variable simólica t, k=Cantidad de términos de cada lado (positivos/negativos)
+%Ejemplo hecho en clase
+
+T=3;   w0=2*pi/T;  % Parámetros de la función original: Periodo y frecuencia fundamental.
+f=pulso(t,2);
+f1=repetir(f,3,T);
+ezplot(f1,-2,5); title('f(t)'); grid on;
+
+n=-k:k;
+
+D0=2/3; % Término de corriente directa (DC)
+Dn=sin(2*i*pi/3)./(n*pi);  % Vector con los términos de la serie con k términos de cada lado
+Dn(k+1)=D0; % Sustituyendo D0 en el vector de coeficientes
+
+
+faprox=sum(Dn.*exp(1i*n*w0*t)); % Función aproximada por la serie
+ezplot(faprox,[0 3*T]); title('Función original vs. aproximada'); hold off;
+

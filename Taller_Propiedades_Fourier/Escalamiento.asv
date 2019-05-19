@@ -1,0 +1,25 @@
+%% Titulo
+% Subtitulo
+syms w; syms t;
+f = pulso(t,2);
+subplot(2,2,1);
+ezplot(f,[-3,3]);
+title('Funcion Original');
+
+
+F = 2*sin(w)/w;
+subplot(2,2,2);
+ezplot(F,[-10,10]);
+title('Transformada de la Funcion Original');
+
+
+fe = pulso(t,4);
+subplot(2,2,3);
+ezplot(fe,[-3,3]);
+title('Funcion Escalada');
+
+F = 2*sin(2*w)/w;
+subplot(2,2,4);
+ezplot(F,[-10,10]);
+axis([-10,10,-1,4.5]);
+title('Transformada de la Funcion Original');

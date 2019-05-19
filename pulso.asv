@@ -1,0 +1,6 @@
+function [ f ] = pulso( x,tau )
+    f=heaviside(xhttp://www.youtube.com/watch?feature=player_embedded&v=3H8-nditxPw);
+    
+
+end
+

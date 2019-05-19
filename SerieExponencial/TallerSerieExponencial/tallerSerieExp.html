@@ -1,0 +1,174 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>tallerSerieExp</title>
+      <meta name="generator" content="MATLAB 7.7">
+      <meta name="date" content="2012-05-11">
+      <meta name="m-file" content="tallerSerieExp"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Inicializaci&oacute;n del gui&oacute;n</a></li>
+               <li><a href="#2">Ejemplo hecho en clase</a></li>
+               <li><a href="#3">Ejemplo de espectro</a></li>
+               <li><a href="#4">Ejercicios</a></li>
+            </ul>
+         </div>
+         <h2>Inicializaci&oacute;n del gui&oacute;n<a name="1"></a></h2>
+         <p>A continuaci&oacute;n se ilustrar&aacute; la visualizaci&oacute;n de series de Fourier exponenciales precalculadas. Para todas las las series calculadas, se usan 10 t&eacute;rminos positivos/negativos. 
+         </p><pre class="codeinput">
+syms <span class="string">t</span>; k=10;   <span class="comment">% Variable sim&oacute;lica t, k=Cantidad de t&eacute;rminos de cada lado (positivos/negativos)</span>
+</pre><h2>Ejemplo hecho en clase<a name="2"></a></h2><pre class="codeinput">T=pi;   w0=2*pi/T;  <span class="comment">% Par&aacute;metros de la funci&oacute;n original: Periodo y frecuencia fundamental.</span>
+f=pulso(t-T/2,T)*exp(-t/2); <span class="comment">% Funci&oacute;n original</span>
+f0=repetir(f,3,T);  <span class="comment">% Periodicidad</span>
+ezplot(f0,[0 3*T]); grid <span class="string">on</span>; hold <span class="string">on</span>;
+
+n=-k:k;
+
+D0=2*(1-exp(-pi/2))/pi; <span class="comment">% T&eacute;rmino de corriente directa (DC)</span>
+Dn=D0*(1-4i*n)./(16*(n.^2)+1);  <span class="comment">% Vector con los t&eacute;rminos de la serie con k t&eacute;rminos de cada lado</span>
+Dn(k+1)=D0; <span class="comment">% Sustituyendo D0 en el vector de coeficientes</span>
+
+faprox=sum(Dn.*exp(1i*n*w0*t)); <span class="comment">% Funci&oacute;n aproximada por la serie</span>
+ezplot(faprox,[0 3*T]); title(<span class="string">'Funci&oacute;n original vs. aproximada'</span>); hold <span class="string">off</span>;
+</pre><img vspace="5" hspace="5" src="tallerSerieExp_01.png" alt=""> <h2>Ejemplo de espectro<a name="3"></a></h2>
+         <p>Cada coeficiente est&aacute; asociado con una frecuencia m&uacute;ltiplo de la frec. fundamental w0. El espectro de frecuencia es otra forma
+            de representar una funci&oacute;n pero no en el dominio del tiempo (t) sino en el dominio de la frecuencia (w)
+         </p><pre class="codeinput">W=n*w0; <span class="comment">% Dominio del gr&aacute;fico (frecuencias m&uacute;ltiplos de la fundamental)</span>
+
+M=abs(Dn);   <span class="comment">% Magnitud de cada coeficiente complejo</span>
+F=angle(Dn);    <span class="comment">% &Aacute;ngulo (o argumento) de cada coeficiente complejo</span>
+
+stem(W,M); hold <span class="string">on</span>; title(<span class="string">'Espectro de frecuencias (Magnitud y Fase)'</span>);
+stem(W,F,<span class="string">'rx'</span>); hold <span class="string">off</span>;
+</pre><img vspace="5" hspace="5" src="tallerSerieExp_02.png" alt=""> <h2>Ejercicios<a name="4"></a></h2>
+         <p>Hallar (en papel) la serie de Fourier exponencial correspondiente a cada una de las siguientes funciones, luego escribir las expresiones en
+            Matlab para graficar una funci&oacute;n aproximada con k t&eacute;rminos positivos/negativos como en el c&oacute;digo de ejemplo.
+         </p><pre class="codeinput">f=pulso(t,2);
+f1=repetir(f,3,3);
+ezplot(f1,-2,5); title(<span class="string">'f(t)'</span>); grid <span class="string">on</span>;
+</pre><img vspace="5" hspace="5" src="tallerSerieExp_03.png" alt=""> <pre class="codeinput">f=pulso(t-1,2)+2*pulso(t-3,2);
+f2=repetir(f,3,5);
+ezplot(f2,0,10); title(<span class="string">'f(t)'</span>); grid <span class="string">on</span>;
+</pre><img vspace="5" hspace="5" src="tallerSerieExp_04.png" alt=""> <pre class="codeinput">f=pulso(t-0.5,1)-pulso(t+0.5,1);
+f3=repetir(f,3,4);
+ezplot(f3,0,6); title(<span class="string">'f(t)'</span>); grid <span class="string">on</span>;
+</pre><img vspace="5" hspace="5" src="tallerSerieExp_05.png" alt=""> <pre class="codeinput">f=(t+2)*pulso(t+1.5,1)+pulso(t,2)+(2-t)*pulso(t-1.5,1);
+f4=repetir(f,3,4);
+ezplot(f4,0,6); title(<span class="string">'f(t)'</span>); grid <span class="string">on</span>;
+</pre><img vspace="5" hspace="5" src="tallerSerieExp_06.png" alt=""> <pre class="codeinput">f=t*pulso(t,2);
+f5=repetir(f,3,2);
+ezplot(f5,-1,3); title(<span class="string">'f(t)'</span>); grid <span class="string">on</span>;
+</pre><img vspace="5" hspace="5" src="tallerSerieExp_07.png" alt=""> <p class="footer"><br>
+            Published with MATLAB&reg; 7.7<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+%% Solución taller de Serie Exponencial de Fourier
+% Para todas las funciones y las series que las aproximan, se usan 10
+% términos positivos/negativos. d0 es la componente directa de todas las
+% señales.
+
+% Inicialización del guión
+syms t; k=10;   % Cantidad de términos de cada lado (positivos/negativos)
+
+%% Ejemplo hecho en clase
+
+T=pi;   w0=2*pi/T;  % Parámetros de la función original
+f=pulso(t-T/2,T)*exp(-t/2); % Función original
+f0=repetir(f,3,T);  % Periodicidad
+ezplot(f0,[0 3*T]); grid on; title('Función original vs. aproximada'); hold on;
+
+n=-k:k;
+
+D0=2*(1-exp(-pi/2))/pi; % Término de corriente directa (DC)
+Dn=D0*(1-4i*n)./(16*(n.^2)+1);  % Vector con los términos de la serie con k términos de cada lado
+Dn(k+1)=D0; % Sustituyendo D0 en el vector de coeficientes
+
+faprox=sum(Dn.*exp(1i*n*w0*t)); % Función aproximada por la serie
+ezplot(faprox,[0 3*T]); hold off;
+
+%% Ejemplo de espectro 
+% Cada coeficiente está asociado con una frecuencia múltiplo de la frec.
+% fundamental w0. El espectro de frecuencia es otra forma de representar
+% una función pero no en el dominio del tiempo (t) sino en el dominio de la
+% frecuencia (w)
+
+W=n*w0; % Dominio del gráfico (frecuencias múltiplos de la fundamental)
+
+M=abs(Dn);   % Magnitud de cada coeficiente complejo
+F=angle(Dn);    % Ángulo (o argumento) de cada coeficiente complejo
+
+stem(W,M); hold on; title('Espectro de frecuencias (Magnitud y Fase)');
+stem(W,F,'rx'); hold off;
+
+##### SOURCE END #####
+-->
+   </body>
+</html>
